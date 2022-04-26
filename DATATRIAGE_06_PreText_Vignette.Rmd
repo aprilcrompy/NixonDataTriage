@@ -1,0 +1,69 @@
+---
+title: 'Notebook 06: PreText Processing of Watergate Transcripts'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+---
+
+
+## **Project: Data Triage of Transcribed Nixon Tapes** <br>
+## *Michelle Ballard and April Crompton* <br>
+## Loyola University Maryland Data Science Project 
+
+Following the getting started tutorial for preText analysis:
+ http://www.mjdenny.com/getting_started_with_preText.html
+ 
+
+```{r}
+
+#install.packages("devtools") ## Un-comment and run install the first time
+
+devtools::install_github("matthewjdenny/preText")
+
+# load the packages
+library(preText)
+library(quanteda)
+library(gargle)
+library(ggplot2)
+library(readxl)
+
+getwd()
+# setwd()  #if needed
+
+exceldata = read_excel("xlsx_combined_df_all.xlsx") 
+df_all_combined = data.frame(exceldata)
+# df_all_combined
+
+# create a corpus object from Combined Transcripts
+corp_combined <- corpus(df_all_combined, text_field = "speech_final")
+
+# preprocess data
+preprocessed_documents_combined <- factorial_preprocessing(
+    corp_combined,
+    use_ngrams = TRUE,
+    infrequent_term_threshold = 0.02,
+    verbose = FALSE)
+
+# run preText
+preText_results_combined <- preText(
+    preprocessed_documents_combined,
+    dataset_name = "Combined Transcripts",
+    distance_method = "euclidean",
+    num_comparisons = 100,
+    verbose = FALSE)
+
+# generate preText score plot
+preText_score_plot(preText_results_combined, remove_labels = TRUE)
+
+# generate regression results
+regression_coefficient_plot(preText_results_combined,
+                            remove_intercept = TRUE)
+# generate preText score plot
+preText_score_plot(preText_results_combined, num_docs = 127,  display_raw_rankings = TRUE, remove_labels = FALSE)
+
+
+```
+
+
