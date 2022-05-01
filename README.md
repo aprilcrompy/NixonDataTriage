@@ -1,4 +1,4 @@
-# NixonDataTriage
+# Nixon Data Triage
 Transcript Data Triage methods on Watergate Trial transcripts
 
 Abstract:
